@@ -1,0 +1,34 @@
+# Buscar todos os Autores
+GET http://localhost:8000/authors/
+
+###
+
+# Criar um novo autor
+POST http://localhost:8000/authors/create/
+Content-Type: application/json
+
+{
+  "name": "Novo Autor",
+  "bio": "Biografia do Novo Autor"
+}
+
+###
+
+# Obter detalhes de um autor específico
+GET http://localhost:8000/authors/1/
+
+###
+
+# Atualizar um autor existente
+PUT http://localhost:8000/authors/update/1/
+Content-Type: application/json
+
+{
+  "name": "Autor Atualizado",
+  "bio": "Biografia do Autor Atualizado"
+}
+
+###
+
+# Excluir um autor
+DELETE http://localhost:8000/authors/delete/1/

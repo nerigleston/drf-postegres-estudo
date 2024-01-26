@@ -1,0 +1,21 @@
+version: '3'
+
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: backend
+    image: postgres
+    command: ["postgres", "-c", "max_connections=100", "-c", "shared_buffers=128MB"]
+    environment:
+      POSTGRES_USER: neri
+      POSTGRES_PASSWORD: 12243648
+      POSTGRES_DB: teste
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data

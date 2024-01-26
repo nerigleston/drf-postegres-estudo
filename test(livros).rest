@@ -1,0 +1,38 @@
+# Buscar todos os Livros
+GET http://localhost:8000/api/books/
+Content-Type: application/json
+Authorization: Token ee02893e273b9d2db61c376e121a63f325b4fd04
+
+###
+
+# Criar um novo livro
+POST http://localhost:8000/books/create/
+Content-Type: application/json
+
+{
+  "title": "Livro Novo",
+  "author": 1,
+  "published_date": "2022-01-25"
+}
+
+###
+
+# Obter detalhes de um livro específico
+GET http://localhost:8000/books/1/
+
+###
+
+# Atualizar um livro existente
+PUT http://localhost:8000/books/update/1/
+Content-Type: application/json
+
+{
+  "title": "Livro Atualizado",
+  "author": 1,
+  "published_date": "2022-01-25"
+}
+
+###
+
+# Excluir um livro
+DELETE http://localhost:8000/books/delete/1/
