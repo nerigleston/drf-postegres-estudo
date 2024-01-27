@@ -385,13 +385,13 @@ delete_book_swagger = extend_schema(
 )
 
 filter_book_date_swagger = extend_schema(
-    summary="Filtrar livros por data de publicação",
-    description="Filtre livros por data de publicação.",
+    summary="Filtrar livros por data de criação",
+    description="Filtre livros por data de criação.",
     methods=['GET'],
     parameters=[
         OpenApiParameter(
             name='created_at',
-            description='Data de publicação - EX: 2020-01-25',
+            description='Data de criação - EX: 2020-01-25',
             required=True,
             type=OpenApiTypes.DATE,
             location=OpenApiParameter.QUERY,
@@ -435,20 +435,20 @@ filter_book_date_swagger = extend_schema(
 )
 
 filter_book_daterange_swagger = extend_schema(
-    summary="Filtrar livros por intervalo de datas de publicação",
-    description="Filtre livros por intervalo de datas de publicação.",
+    summary="Filtrar livros por intervalo de datas de criação",
+    description="Filtre livros por intervalo de datas de criação.",
     methods=['GET'],
     parameters=[
         OpenApiParameter(
             name='start_date',
-            description='Data de publicação inicial - EX: 2020-01-25',
+            description='Data de criação inicial - EX: 2020-01-25',
             required=True,
             type=OpenApiTypes.DATE,
             location=OpenApiParameter.QUERY,
         ),
         OpenApiParameter(
             name='end_date',
-            description='Data de publicação final - EX: 2022-01-25',
+            description='Data de criação final - EX: 2022-01-25',
             required=True,
             type=OpenApiTypes.DATE,
             location=OpenApiParameter.QUERY,
