@@ -9,9 +9,9 @@ signup_swagger = extend_schema(
     request={
         'application/json': {
             'example': {
-                'email': 'neris@email.com',
-                'username': 'neris',
-                'password': 'neris123',
+                'email': 'neri@email.com',
+                'username': 'neri',
+                'password': 'neri',
             }
         }
     },
@@ -44,8 +44,8 @@ login_swagger = extend_schema(
     request={
         'application/json': {
             'example': {
-                'username': 'neris',
-                'password': 'neris123',
+                'username': 'neri',
+                'password': 'neri',
             }
         }
     },

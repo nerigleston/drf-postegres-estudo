@@ -1,7 +1,7 @@
 # Buscar todos os Livros
 GET http://localhost:8000/api/books/
 Content-Type: application/json
-Authorization: Token ee02893e273b9d2db61c376e121a63f325b4fd04
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2MzA3MTc5LCJpYXQiOjE3MDYzMDY4NzksImp0aSI6ImNlMzY4NzA3YzkyNDRhNmFiZDFjOGQ3MTk1ZWVkMDYxIiwidXNlcl9pZCI6MX0.5dKQ4tCwa16FJ8NoLblR-W2VmpGia8jrfmJtpbxVQsM
 
 ###
 
@@ -12,7 +12,8 @@ Content-Type: application/json
 {
   "title": "Livro Novo",
   "author": 1,
-  "published_date": "2022-01-25"
+  "created_at": "25-01-2020",
+  "published_date": "25-01-2022"
 }
 
 ###

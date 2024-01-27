@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse, OpenApiExample
 from drf_spectacular.types import OpenApiTypes
 
 # Endpoints para Autores
@@ -19,7 +19,15 @@ author_list_swagger = extend_schema(
             description='Autores não encontrados',
             examples={
                 'application/json': {
-                    'message': 'Autores não encontrados'
+                    'message': 'Nenhum autor encontrado ou adicionado'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
                 }
             }
         )
@@ -55,6 +63,14 @@ create_author_swagger = extend_schema(
                     'message': 'Dados inválidos no corpo da requisição'
                 }
             }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
+                }
+            }
         )
     },
     tags=["Autores"]
@@ -78,6 +94,14 @@ get_author_detail_swagger = extend_schema(
             examples={
                 'application/json': {
                     'message': 'Autor não encontrado'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
                 }
             }
         )
@@ -121,6 +145,14 @@ update_author_swagger = extend_schema(
                     'message': 'Dados inválidos no corpo da requisição'
                 }
             }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
+                }
+            }
         )
     },
     tags=["Autores"]
@@ -146,6 +178,14 @@ delete_author_swagger = extend_schema(
                     'message': 'Autor não encontrado'
                 }
             }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
+                }
+            }
         )
     },
     tags=["Autores"]
@@ -169,7 +209,15 @@ get_book_list_swagger = extend_schema(
             description='Livros não encontrados',
             examples={
                 'application/json': {
-                    'message': 'Livros não encontrados'
+                    'message': 'Nenhum livro encontrado ou adicionado'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
                 }
             }
         )
@@ -186,6 +234,7 @@ create_book_swagger = extend_schema(
             'example': {
                 'title': 'Livro Novo',
                 'author': 1,
+                'created_at': '2020-01-25',
                 'published_date': '2022-01-25',
             }
         },
@@ -204,6 +253,14 @@ create_book_swagger = extend_schema(
             examples={
                 'application/json': {
                     'message': 'Dados inválidos no corpo da requisição'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
                 }
             }
         )
@@ -229,6 +286,14 @@ get_book_detail_swagger = extend_schema(
             examples={
                 'application/json': {
                     'message': 'Livro não encontrado'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
                 }
             }
         )
@@ -273,6 +338,14 @@ update_book_swagger = extend_schema(
                     'message': 'Dados inválidos no corpo da requisição'
                 }
             }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
+                }
+            }
         )
     },
     tags=["Livros"]
@@ -296,6 +369,121 @@ delete_book_swagger = extend_schema(
             examples={
                 'application/json': {
                     'message': 'Livro não encontrado'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
+                }
+            }
+        )
+    },
+    tags=["Livros"]
+)
+
+filter_book_date_swagger = extend_schema(
+    summary="Filtrar livros por data de publicação",
+    description="Filtre livros por data de publicação.",
+    methods=['GET'],
+    parameters=[
+        OpenApiParameter(
+            name='created_at',
+            description='Data de publicação - EX: 2020-01-25',
+            required=True,
+            type=OpenApiTypes.DATE,
+            location=OpenApiParameter.QUERY,
+        ),
+    ],
+    responses={
+        200: OpenApiResponse(
+            description='Livros filtrados com sucesso',
+            examples={
+                'application/json': {
+                    'message': 'Livros filtrados com sucesso'
+                }
+            }
+        ),
+        400: OpenApiResponse(
+            description='Parâmetro "created_at" não informado',
+            examples={
+                'application/json': {
+                    'message': 'Parâmetro "created_at" não informado'
+                }
+            }
+        ),
+        404: OpenApiResponse(
+            description='Livros não encontrados',
+            examples={
+                'application/json': {
+                    'message': 'Livros não encontrados'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
+                }
+            }
+        )
+    },
+    tags=["Livros"]
+)
+
+filter_book_daterange_swagger = extend_schema(
+    summary="Filtrar livros por intervalo de datas de publicação",
+    description="Filtre livros por intervalo de datas de publicação.",
+    methods=['GET'],
+    parameters=[
+        OpenApiParameter(
+            name='start_date',
+            description='Data de publicação inicial - EX: 2020-01-25',
+            required=True,
+            type=OpenApiTypes.DATE,
+            location=OpenApiParameter.QUERY,
+        ),
+        OpenApiParameter(
+            name='end_date',
+            description='Data de publicação final - EX: 2022-01-25',
+            required=True,
+            type=OpenApiTypes.DATE,
+            location=OpenApiParameter.QUERY,
+        ),
+    ],
+    responses={
+        200: OpenApiResponse(
+            description='Livros filtrados com sucesso',
+            examples={
+                'application/json': {
+                    'message': 'Livros filtrados com sucesso'
+                }
+            }
+        ),
+        400: OpenApiResponse(
+            description='Parâmetros "start_date" e "end_date" não informados',
+            examples={
+                'application/json': {
+                    'message': 'Parâmetros "start_date" e "end_date" não informados'
+                }
+            }
+        ),
+        404: OpenApiResponse(
+            description='Livros não encontrados',
+            examples={
+                'application/json': {
+                    'message': 'Livros não encontrados'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
                 }
             }
         )

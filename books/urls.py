@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from .views import (
     get_author_list, create_author, get_author_detail, update_author, delete_author,
-    get_book_list, create_book, get_book_detail, update_book, delete_book
+    get_book_list, create_book, get_book_detail, update_book, delete_book, filter_book_date, filter_book_daterange
 )
 
 urlpatterns = [
@@ -16,4 +16,6 @@ urlpatterns = [
     path('books/create/', create_book, name='book-create'),
     path('books/update/<int:pk>/', update_book, name='book-update'),
     path('books/delete/<int:pk>/', delete_book, name='book-delete'),
+    path('books/filter/', filter_book_date, name='book-filter'),
+    path('books/filter_range/', filter_book_daterange, name='book-filter-range'),
 ]
