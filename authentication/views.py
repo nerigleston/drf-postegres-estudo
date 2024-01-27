@@ -18,15 +18,16 @@ def signup(request):
     serializer = ProfileUserSerializer(data=request.data)
     if serializer.is_valid():
         user = User.objects.create_user(
-            username=serializer.validated_data['username'])
+            username=serializer.validated_data['username'],
+            email=serializer.validated_data['email']
+        )
         user.set_password(serializer.validated_data['password'])
         user.save()
         refresh = RefreshToken.for_user(user)
         refresh.access_token.set_exp(lifetime=timedelta(hours=1))
         access_token = str(refresh.access_token)
-        return Response({'token': 'Bearer ' + access_token, 'user': serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({'token': access_token, 'user': serializer.data}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 # Login View
 
@@ -42,7 +43,7 @@ def login(request):
         access_token = str(refresh.access_token)
         serializer = ProfileUserSerializer(user)
 
-        return Response({'token': 'Bearer ' + access_token, 'user': serializer.data}, status=status.HTTP_200_OK)
+        return Response({'token': access_token, 'user': serializer.data}, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
