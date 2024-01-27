@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
     "drf_spectacular",
-    'django_filters',
 ]
 
 REST_USE_JWT = True
