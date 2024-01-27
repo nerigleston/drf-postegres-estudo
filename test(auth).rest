@@ -1,3 +1,13 @@
 GET http://127.0.0.1:8000/api/auth/test_token
 Content-Type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2MzA3MTc5LCJpYXQiOjE3MDYzMDY4NzksImp0aSI6ImNlMzY4NzA3YzkyNDRhNmFiZDFjOGQ3MTk1ZWVkMDYxIiwidXNlcl9pZCI6MX0.5dKQ4tCwa16FJ8NoLblR-W2VmpGia8jrfmJtpbxVQsM
+
+###
+
+POST http://127.0.0.1:8000/api/auth/login/
+Content-Type: application/json
+
+{
+    "username": "neri",
+    "password": "neri"
+}
