@@ -1,7 +1,5 @@
 from django.db import models
 
-from library.models import Library
-
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -19,7 +17,7 @@ class Book(models.Model):
     published_date = models.DateField()
     is_valid = models.BooleanField(default=True)
     libraries = models.ManyToManyField(
-        Library, related_name='books', blank=True)  # Relacionamento Many-to-Many com Library
+        'library.Library', related_name='books', blank=True)
 
     def __str__(self):
         return self.title

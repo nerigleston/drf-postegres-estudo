@@ -1,4 +1,5 @@
 from django.db import models
+from books.models import Book
 
 
 class Library(models.Model):
@@ -7,3 +8,6 @@ class Library(models.Model):
 
     def __str__(self):
         return self.name
+
+    def available_books(self):
+        return Book.objects.filter(libraries=self, is_valid=True)
