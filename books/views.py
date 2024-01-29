@@ -3,6 +3,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+
+from library.models import Library
 from .serializers import AuthorSerializer, BookSerializer
 from .models import Author, Book
 from .swagger_docs import (
@@ -17,7 +19,9 @@ from .swagger_docs import (
     update_book_swagger,
     delete_book_swagger,
     filter_book_date_swagger,
-    filter_book_daterange_swagger
+    filter_book_daterange_swagger,
+    update_book_isvalid_swagger,
+    update_book_libraries_swagger,
 )
 
 import logging
@@ -152,7 +156,10 @@ def create_book(request):
     try:
         serializer = BookSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            library_ids = request.data.get('libraries', [])
+            libraries = Library.objects.filter(id__in=library_ids)
+            book = serializer.save()
+            book.libraries.set(libraries)
             logger.info(f'Livro criado com sucesso: {serializer.data}')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         logger.error(
@@ -274,3 +281,47 @@ def filter_book_daterange(request):
         logger.exception(
             f'Erro ao filtrar livros por intervalo de data: {str(e)}')
         return Response({'error': f'Erro ao filtrar livros por intervalo de data: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@update_book_isvalid_swagger
+@api_view(['PATCH'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def update_book_isvalid(request, pk):
+    try:
+        book = Book.objects.get(pk=pk)
+        book.is_valid = not book.is_valid
+        book.save()
+        serializer = BookSerializer(book)
+        logger.info(
+            f'Status de validação do livro atualizado com sucesso: {serializer.data}')
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Book.DoesNotExist:
+        logger.warning(f'Livro não encontrado com ID {pk}')
+        return Response({'error': f'Livro não encontrado com ID {pk}'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        logger.exception(f'Erro ao atualizar livro: {str(e)}')
+        return Response({'error': f'Erro ao atualizar livro: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@update_book_libraries_swagger
+@api_view(['PATCH'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def update_book_libraries(request, pk):
+    try:
+        book = Book.objects.get(pk=pk)
+        library_ids = request.data.get('libraries', [])
+        libraries = Library.objects.filter(id__in=library_ids)
+        book.libraries.set(libraries)
+        book.save()
+        serializer = BookSerializer(book)
+        logger.info(
+            f'Bibliotecas do livro atualizadas com sucesso: {serializer.data}')
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Book.DoesNotExist:
+        logger.warning(f'Livro não encontrado com ID {pk}')
+        return Response({'error': f'Livro não encontrado com ID {pk}'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        logger.exception(f'Erro ao atualizar bibliotecas do livro: {str(e)}')
+        return Response({'error': f'Erro ao atualizar bibliotecas do livro: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

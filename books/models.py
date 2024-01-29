@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils import timezone
+
+from library.models import Library
 
 
 class Author(models.Model):
@@ -16,6 +17,9 @@ class Book(models.Model):
     author = models.ForeignKey(
         Author, related_name='books', on_delete=models.CASCADE)
     published_date = models.DateField()
+    is_valid = models.BooleanField(default=True)
+    libraries = models.ManyToManyField(
+        Library, related_name='books', blank=True)  # Relacionamento Many-to-Many com Library
 
     def __str__(self):
         return self.title

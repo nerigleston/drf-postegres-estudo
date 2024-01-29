@@ -227,7 +227,7 @@ get_book_list_swagger = extend_schema(
 
 create_book_swagger = extend_schema(
     summary="Criar um novo livro",
-    description="Crie um novo livro com o título, ID do autor e data de publicação fornecidos.",
+    description="Crie um novo livro com o título, ID do autor, data de publicação e bibliotecas fornecidos.",
     methods=['POST'],
     request={
         'application/json': {
@@ -236,6 +236,8 @@ create_book_swagger = extend_schema(
                 'author': 1,
                 'created_at': '2020-01-25',
                 'published_date': '2022-01-25',
+                'is_valid': True,
+                'libraries': [1, 2]  # Exemplo de lista de IDs de bibliotecas
             }
         },
     },
@@ -267,6 +269,7 @@ create_book_swagger = extend_schema(
     },
     tags=["Livros"]
 )
+
 
 get_book_detail_swagger = extend_schema(
     summary="Obter detalhes de um livro específico",
@@ -310,7 +313,8 @@ update_book_swagger = extend_schema(
             "example": {
                 "title": "Livro Atualizado",
                 "author": 1,
-                "published_date": "2022-01-25"
+                "published_date": "2022-01-25",
+                "libraries": [1, 2]
             }
         },
     },
@@ -476,6 +480,103 @@ filter_book_daterange_swagger = extend_schema(
             examples={
                 'application/json': {
                     'message': 'Livros não encontrados'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
+                }
+            }
+        )
+    },
+    tags=["Livros"]
+)
+
+update_book_isvalid_swagger = extend_schema(
+    summary="Atualizar status de validação de um livro específico",
+    description="Atualize o status de validação de um livro específico pelo seu ID.",
+    methods=['PATCH'],
+    request={
+        "application/json": {
+            "example": {
+                "is_valid": False
+            }
+        },
+    },
+    responses={
+        200: OpenApiResponse(
+            description='Status de validação do livro atualizado com sucesso',
+            examples={
+                'application/json': {
+                    'message': 'Status de validação do livro atualizado com sucesso'
+                }
+            }
+        ),
+        404: OpenApiResponse(
+            description='Livro não encontrado',
+            examples={
+                'application/json': {
+                    'message': 'Livro não encontrado'
+                }
+            }
+        ),
+        400: OpenApiResponse(
+            description='Dados inválidos no corpo da requisição',
+            examples={
+                'application/json': {
+                    'message': 'Dados inválidos no corpo da requisição'
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description='Erro interno no servidor',
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor'
+                }
+            }
+        )
+    },
+    tags=["Livros"]
+)
+
+
+update_book_libraries_swagger = extend_schema(
+    summary="Atualizar bibliotecas de um livro específico",
+    description="Atualize as bibliotecas de um livro específico pelo seu ID.",
+    methods=['PATCH'],
+    request={
+        "application/json": {
+            "example": {
+                "libraries": [1, 2]
+            }
+        },
+    },
+    responses={
+        200: OpenApiResponse(
+            description='Bibliotecas do livro atualizadas com sucesso',
+            examples={
+                'application/json': {
+                    'message': 'Bibliotecas do livro atualizadas com sucesso'
+                }
+            }
+        ),
+        404: OpenApiResponse(
+            description='Livro não encontrado',
+            examples={
+                'application/json': {
+                    'message': 'Livro não encontrado'
+                }
+            }
+        ),
+        400: OpenApiResponse(
+            description='Dados inválidos no corpo da requisição',
+            examples={
+                'application/json': {
+                    'message': 'Dados inválidos no corpo da requisição'
                 }
             }
         ),
