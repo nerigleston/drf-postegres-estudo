@@ -181,7 +181,7 @@ upload_multiple_files_swagger = extend_schema(
         }
     },
     responses={
-        200: OpenApiResponse(
+        201: OpenApiResponse(
             description="Arquivos lidos com sucesso",
             examples={
                 'application/json': {
@@ -193,7 +193,7 @@ upload_multiple_files_swagger = extend_schema(
             description="Erro de validação",
             examples={
                 'application/json': {
-                    'message': 'Erro de validação',
+                    'error': 'Erro de validação',
                 }
             }
         ),
@@ -201,7 +201,7 @@ upload_multiple_files_swagger = extend_schema(
             description="Erro interno",
             examples={
                 'application/json': {
-                    'message': 'Erro interno no servidor',
+                    'error': 'Erro interno no servidor',
                 }
             }
         )

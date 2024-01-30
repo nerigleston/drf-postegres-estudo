@@ -5,6 +5,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+
 from .serializers import FileModelSerializer, LibrarySerializer
 from .models import Library
 from .swagger_docs import (
@@ -93,13 +94,22 @@ def update_library(request, pk):
 
 @upload_multiple_files_swagger
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 @parser_classes((MultiPartParser,))
 def upload_multiple_files(request):
-    serializer = FileModelSerializer(data=request.data)
+    try:
+        serializer = FileModelSerializer(data=request.data)
 
-    if serializer.is_valid():
-        serializer.save()
+        if serializer.is_valid():
+            serializer.save()
+            logger.info("Arquivos lidos com sucesso")
+            return Response({"message": "Arquivos lidos com sucesso"}, status=status.HTTP_201_CREATED)
+        else:
+            logger.error(
+                f"Erro de validação ao ler arquivos: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"message": "Arquivos lidos com sucesso"})
-    else:
-        return Response(serializer.errors, status=400)
+    except Exception as e:
+        logger.error(f"Erro interno ao processar arquivos: {str(e)}")
+        return Response({"error": "Erro interno do servidor"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
