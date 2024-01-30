@@ -1,16 +1,18 @@
 import logging
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes, parser_classes
+from rest_framework.parsers import MultiPartParser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import LibrarySerializer
+from .serializers import FileModelSerializer, LibrarySerializer
 from .models import Library
 from .swagger_docs import (
     get_library_list_swagger,
     get_library_detail_swagger,
     create_library_swagger,
     update_library_swagger,
+    upload_multiple_files_swagger,
 )
 
 logger = logging.getLogger(__name__)
@@ -87,3 +89,17 @@ def update_library(request, pk):
     except Exception as e:
         logger.error(f'Erro ao atualizar biblioteca: {str(e)}')
         return Response({'error': 'Erro interno do servidor'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@upload_multiple_files_swagger
+@api_view(['POST'])
+@parser_classes((MultiPartParser,))
+def upload_multiple_files(request):
+    serializer = FileModelSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+        return Response({"message": "Arquivos lidos com sucesso"})
+    else:
+        return Response(serializer.errors, status=400)

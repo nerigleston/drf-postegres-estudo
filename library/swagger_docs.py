@@ -158,3 +158,53 @@ update_library_swagger = extend_schema(
     },
     tags=['Livrarias']
 )
+
+# Upload de arquivos
+
+upload_multiple_files_swagger = extend_schema(
+    summary='Upload de múltiplos arquivos',
+    description='Realiza o upload de múltiplos arquivos',
+    methods=['POST'],
+    operation_id='upload_file',
+    request={
+        'multipart/form-data': {
+            'type': 'object',
+            'properties': {
+                'files': {
+                    'type': 'array',
+                    'items': {
+                        'type': 'string',
+                        'format': 'binary'
+                    }
+                }
+            }
+        }
+    },
+    responses={
+        200: OpenApiResponse(
+            description="Arquivos lidos com sucesso",
+            examples={
+                'application/json': {
+                    'message': 'Arquivos lidos com sucesso',
+                }
+            }
+        ),
+        400: OpenApiResponse(
+            description="Erro de validação",
+            examples={
+                'application/json': {
+                    'message': 'Erro de validação',
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description="Erro interno",
+            examples={
+                'application/json': {
+                    'message': 'Erro interno no servidor',
+                }
+            }
+        )
+    },
+    tags=['Arquivos']
+)

@@ -11,3 +11,7 @@ class Library(models.Model):
 
     def available_books(self):
         return Book.objects.filter(libraries=self, is_valid=True)
+
+
+class FileModel(models.Model):
+    files = models.FileField(upload_to='upload/')
